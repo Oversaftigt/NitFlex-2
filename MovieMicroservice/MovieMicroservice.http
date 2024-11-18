@@ -1,0 +1,6 @@
+@MovieMicroservice_HostAddress = http://localhost:5062
+
+GET {{MovieMicroservice_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
