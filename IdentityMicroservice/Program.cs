@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -24,6 +26,8 @@ builder.Services.AddIdentity<IdentityUser,IdentityRole>()
 
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 //Help/Maintain identity roles
 using (var scope = app.Services.CreateScope())
