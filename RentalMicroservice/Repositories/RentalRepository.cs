@@ -27,12 +27,16 @@ namespace RentalMicroservice.Repositories
 
         List<RentalItem> IRentalRepository.GetAllRentalByUser(Guid userId)
         {
-            throw new NotImplementedException();
+            var rentals = _context.Rentals.Where(r => r.UserId == userId && r.RentalEndDate >= DateTime.UtcNow.Date); //all active rentals
+            return rentals.ToList();
         }
 
         bool IRentalRepository.DoesUserHaveRentalForThisMovie(Guid movieId, Guid userId)
         {
-            throw new NotImplementedException();
+            var hasRental = _context.Rentals.Any(r => r.UserId == userId &&
+                                                      r.MovieId == movieId &&
+                                                      r.RentalEndDate >= DateTime.UtcNow.Date);
+            return hasRental;
         }
     }
 }
