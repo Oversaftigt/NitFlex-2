@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieMicroservice", "MovieM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentalMicroservice", "RentalMicroservice\RentalMicroservice.csproj", "{1C0EB67D-A496-4F6E-A713-33C4C6F77AAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityMicroservice", "IdentityMicroservice\IdentityMicroservice.csproj", "{588103B6-5BAF-41B3-A884-A0B88FF340A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1C0EB67D-A496-4F6E-A713-33C4C6F77AAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C0EB67D-A496-4F6E-A713-33C4C6F77AAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C0EB67D-A496-4F6E-A713-33C4C6F77AAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{588103B6-5BAF-41B3-A884-A0B88FF340A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{588103B6-5BAF-41B3-A884-A0B88FF340A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{588103B6-5BAF-41B3-A884-A0B88FF340A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{588103B6-5BAF-41B3-A884-A0B88FF340A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
