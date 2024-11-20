@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 // Add services to the container.
-
+// Dapr
 builder.Services.AddControllers().AddDapr();
 builder.Services.AddDaprClient();
 

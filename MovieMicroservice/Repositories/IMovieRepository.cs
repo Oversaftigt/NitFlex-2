@@ -8,5 +8,6 @@ namespace MovieMicroservice.Repositories
         void EditMovie(EditMovieItem editMovieItem);
         void DeleteMovie(DeleteMovieItem deleteMovieItem);
         List<MovieItem> GetAllMovies();
+
     }
 }

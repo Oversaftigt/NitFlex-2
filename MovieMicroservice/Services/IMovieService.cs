@@ -8,5 +8,6 @@ namespace MovieMicroservice.Services
         void EditMovie(EditMovieItem editMovieItem);
         void DeleteMovie(DeleteMovieItem deleteMovieItem);
         List<MovieItem> GetAllMovies();
+        string GetMovieLink(MovieItem movieItem);
     }
 }

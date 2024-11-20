@@ -31,5 +31,10 @@ namespace MovieMicroservice.Services
         {
             return _movieRepository.GetAllMovies();
         }
+
+        string IMovieService.GetMovieLink(MovieItem movieItem)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
