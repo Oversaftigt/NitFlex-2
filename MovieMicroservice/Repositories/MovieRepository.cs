@@ -57,5 +57,13 @@ namespace MovieMicroservice.Repositories
             var allMovies = _context.Movies.ToList();
             return allMovies;
         }
+
+        MovieItem IMovieRepository.GetMovieById(Guid id)
+        {
+            var movie = _context.Movies.FirstOrDefault(m => m.Id == id);
+
+            return movie;
+            
+        }
     }
 }

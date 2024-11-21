@@ -1,8 +1,11 @@
 ﻿using Dapr.Client;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieMicroservice.Models;
+using MovieMicroservice.Models.DTOs;
 using MovieMicroservice.Services;
 using MovieMicroservice.Workflows;
+using System.Security.Claims;
 
 namespace MovieMicroservice.Controllers
 {
@@ -22,7 +25,7 @@ namespace MovieMicroservice.Controllers
             _daprClient = daprClient;
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> CreateMovie(CreateMovieItem createMovieItem)
         {
@@ -37,9 +40,20 @@ namespace MovieMicroservice.Controllers
                 return StatusCode(500, new { message = "Error creating movie", error = ex.Message });
             }
         }
+        
+        [HttpGet("movieId")]
+        public async Task<IActionResult> GetMovieDetails(Guid movieId)
+        {
+            var movie = _movieService.GetMovieById(movieId);
+            if (movie is not null) 
+            { 
+                return Ok(movie);
+            }
+            return BadRequest("Error getting movie details");
+        }
 
         [HttpPost("fetch-movie")]
-        public async Task<IActionResult> FetchMovie([FromBody] Guid movieId)
+        public async Task<IActionResult> FetchMovieLink([FromBody] RentalValidationRequest request)
         {
 
             try
@@ -48,10 +62,11 @@ namespace MovieMicroservice.Controllers
 
                 await _daprClient.StartWorkflowAsync(
                     "FetchMovieWorkflow",
-                    "FetchMovieWorkflow",
+                    "s",
                     workflowInstanceId,
-                    movieId.ToString()
+                    request
                     );
+                    
 
                 return Ok(new {WorkflowInstanceId = workflowInstanceId});
             }
@@ -63,5 +78,58 @@ namespace MovieMicroservice.Controllers
 
         }
 
+        //test
+        [HttpGet("test")]
+        [Authorize]
+        public async Task<IActionResult> test()
+        {
+            try
+            {
+                var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var token = HttpContext.Request.Headers["Authorization"].ToString()?.Replace("Bearer ", "");
+
+                // Create an HTTP client for the IdentityMicroservice
+                var httpClient = DaprClient.CreateInvokeHttpClient("identitymicroservice");
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                // Make the GET request
+                var response = await httpClient.GetAsync("api/account/userId");
+
+                //if (!response.IsSuccessStatusCode)
+                //{
+                //    return StatusCode((int)response.StatusCode, "Error calling IdentityMicroservice");
+                //}
+
+                // Read the response as a string
+                var userId = await response.Content.ReadAsStringAsync();
+
+                return Ok(userId);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error getting userId", ex);
+            }
+        }
+
+        [HttpPost("test2")]
+        public async Task<IActionResult> test2([FromBody] RentalValidationRequest input)
+        {
+            try
+            {
+                var isValidrental = await _daprClient.InvokeMethodAsync<RentalValidationRequest, bool>(
+                    "rentalmicroservice",
+                    "api/rental/validate",
+                    input
+                    );
+
+                return Ok(isValidrental);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error validating rental", ex);
+            }
+        }
     }
 }

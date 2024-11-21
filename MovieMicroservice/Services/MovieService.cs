@@ -36,5 +36,10 @@ namespace MovieMicroservice.Services
         {
             return "Placeholder movie link";
         }
+
+        MovieItem IMovieService.GetMovieById(Guid id)
+        {
+            return _movieRepository.GetMovieById(id);
+        }
     }
 }

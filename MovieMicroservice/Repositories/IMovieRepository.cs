@@ -7,6 +7,7 @@ namespace MovieMicroservice.Repositories
         void CreateMovie(CreateMovieItem createMovieItem);
         void EditMovie(EditMovieItem editMovieItem);
         void DeleteMovie(DeleteMovieItem deleteMovieItem);
+        MovieItem GetMovieById(Guid id);
         List<MovieItem> GetAllMovies();
 
     }

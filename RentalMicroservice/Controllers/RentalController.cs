@@ -21,14 +21,14 @@ namespace RentalMicroservice.Controllers
             _daprClient = daprClient;
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CreateRental(CreateRentalItem createRentalItem)
+        [HttpPost("create")]
+        public async Task<ActionResult> CreateRental([FromBody]CreateRentalItem createRentalItem)
         {
             try
             {
                 _rentalService.CreateRental(createRentalItem);
                 _logger.LogInformation("Creating Rental for UserID:" + createRentalItem.UserId + " with movie: " + createRentalItem.MovieId);
-                return Ok();
+                return Ok($"{createRentalItem.UserId} is now renting {createRentalItem.MovieId}");
             }
             catch (Exception ex)
             {
@@ -41,6 +41,13 @@ namespace RentalMicroservice.Controllers
         {
             var isValidRental = _rentalService.DoesUserHaveRentalForThisMovie(request.MovieId, request.UserId);
             return Ok(isValidRental);
+        }
+
+        [HttpPost("{userId}")]
+        public async Task<IActionResult> GetAllRentalsForUser(Guid userId)
+        {
+            var rentals = _rentalService.GetAllRentalByUser(userId);
+            return Ok(rentals);
         }
     }
 }
