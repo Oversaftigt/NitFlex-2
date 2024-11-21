@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieMicroservice.Models;
 using MovieMicroservice.Services;
+using MovieMicroservice.Workflows;
 
 namespace MovieMicroservice.Controllers
 {
@@ -33,8 +34,34 @@ namespace MovieMicroservice.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new {message = "Error creating movie", error = ex.Message });
+                return StatusCode(500, new { message = "Error creating movie", error = ex.Message });
             }
         }
+
+        [HttpPost("fetch-movie")]
+        public async Task<IActionResult> FetchMovie([FromBody] Guid movieId)
+        {
+
+            try
+            {
+                var workflowInstanceId = Guid.NewGuid().ToString();
+
+                await _daprClient.StartWorkflowAsync(
+                    "FetchMovieWorkflow",
+                    "FetchMovieWorkflow",
+                    workflowInstanceId,
+                    movieId.ToString()
+                    );
+
+                return Ok(new {WorkflowInstanceId = workflowInstanceId});
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"An error occured getting the movie: {ex.Message}");
+            }
+
+        }
+
     }
 }

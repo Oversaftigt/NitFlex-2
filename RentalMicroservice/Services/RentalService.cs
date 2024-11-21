@@ -24,7 +24,7 @@ namespace RentalMicroservice.Services
 
         bool IRentalService.DoesUserHaveRentalForThisMovie(Guid movieId, Guid userId)
         {
-            return _rentalRepository.DoesUserHaveRentalForThisMovie(movieId, userId);
+            return _rentalRepository.DoesUserHaveValidRentalForThisMovie(movieId, userId);
         }
     }
 }

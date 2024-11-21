@@ -1,4 +1,6 @@
+using Dapr.Workflow;
 using Microsoft.EntityFrameworkCore;
+
 using RentalMicroservice.Data;
 using RentalMicroservice.Repositories;
 using RentalMicroservice.Services;
@@ -11,6 +13,7 @@ builder.AddServiceDefaults();
 // Dapr
 builder.Services.AddControllers().AddDapr();
 builder.Services.AddDaprClient();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -31,7 +31,7 @@ namespace RentalMicroservice.Repositories
             return rentals.ToList();
         }
 
-        bool IRentalRepository.DoesUserHaveRentalForThisMovie(Guid movieId, Guid userId)
+        bool IRentalRepository.DoesUserHaveValidRentalForThisMovie(Guid movieId, Guid userId)
         {
             var hasRental = _context.Rentals.Any(r => r.UserId == userId &&
                                                       r.MovieId == movieId &&

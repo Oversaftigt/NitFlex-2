@@ -32,9 +32,9 @@ namespace MovieMicroservice.Services
             return _movieRepository.GetAllMovies();
         }
 
-        string IMovieService.GetMovieLink(MovieItem movieItem)
+        string IMovieService.GetMovieLinkById(Guid id)
         {
-            throw new NotImplementedException();
+            return "Placeholder movie link";
         }
     }
 }

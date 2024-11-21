@@ -35,5 +35,12 @@ namespace RentalMicroservice.Controllers
                 return StatusCode(500, new { message = "Error creating rental", error = ex.Message });
             }
         }
+
+        [HttpPost("validate")]
+        public async Task<IActionResult> CheckValidRental([FromBody] RentalValidationRequest request)
+        {
+            var isValidRental = _rentalService.DoesUserHaveRentalForThisMovie(request.MovieId, request.UserId);
+            return Ok(isValidRental);
+        }
     }
 }

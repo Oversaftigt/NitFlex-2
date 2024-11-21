@@ -1,7 +1,11 @@
+using Dapr.Workflow;
 using Microsoft.EntityFrameworkCore;
+using MovieMicroservice.Activities.External;
+using MovieMicroservice.Activities.Internal;
 using MovieMicroservice.Data;
 using MovieMicroservice.Repositories;
 using MovieMicroservice.Services;
+using MovieMicroservice.Workflows;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +15,14 @@ builder.AddServiceDefaults();
 
 builder.Services.AddControllers().AddDapr();
 builder.Services.AddDaprClient();
+builder.Services.AddDaprWorkflow(options =>
+{
+    options.RegisterWorkflow<FetchMovieWorkflow>();
+
+    options.RegisterActivity<GetMovieLinkActivity>();
+    options.RegisterActivity<GetUserInfoActivity>();
+    options.RegisterActivity<CheckValidRentalForUserActivity>();
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

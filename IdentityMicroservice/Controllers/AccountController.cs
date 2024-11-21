@@ -112,5 +112,28 @@ namespace IdentityMicroservice.Controllers
             return BadRequest(result.Errors);
         }
 
+        [HttpGet("userId")]
+        public async Task<IActionResult> GetUserInfo()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId is null)
+            {
+                return Unauthorized("User not logged in");
+            }
+
+            return Ok(userId);
+        }
+
+        [HttpGet("email")]
+        public async Task<IActionResult> GetUserEmail()
+        {
+            var email = User.FindFirstValue(ClaimTypes.Email);
+            if (email is null)
+            {
+                return Unauthorized("Email not found");
+            }
+
+            return Ok(email);
+        }
     }
 }
