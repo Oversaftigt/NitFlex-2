@@ -48,7 +48,7 @@ builder.Services.AddSwaggerGen(opt =>
 
 //Dbcontext configuration (connectionstring)
 builder.Services.AddDbContext<UserDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSql")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDB")));
 
 //UserDbContext identity configuration
 builder.Services.AddIdentity<IdentityUser,IdentityRole>(options =>

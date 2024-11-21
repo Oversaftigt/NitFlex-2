@@ -3,15 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35506.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieMicroservice", "MovieMicroservice\MovieMicroservice.csproj", "{FD49DC8E-8B79-492C-962F-F2367131E6FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieMicroservice", "MovieMicroservice\MovieMicroservice.csproj", "{FD49DC8E-8B79-492C-962F-F2367131E6FB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentalMicroservice", "RentalMicroservice\RentalMicroservice.csproj", "{1C0EB67D-A496-4F6E-A713-33C4C6F77AAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentalMicroservice", "RentalMicroservice\RentalMicroservice.csproj", "{1C0EB67D-A496-4F6E-A713-33C4C6F77AAE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityMicroservice", "IdentityMicroservice\IdentityMicroservice.csproj", "{588103B6-5BAF-41B3-A884-A0B88FF340A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityMicroservice", "IdentityMicroservice\IdentityMicroservice.csproj", "{588103B6-5BAF-41B3-A884-A0B88FF340A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NitFlex.AppHost", "NitFlex.AppHost\NitFlex.AppHost.csproj", "{CD1FB41D-2F1D-4C83-B85E-34013AD60F91}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NitFlex.ServiceDefaults", "NitFlex.ServiceDefaults\NitFlex.ServiceDefaults.csproj", "{E7264B91-B147-415F-8718-CE33052CB3C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{2B8A15B6-B569-40EF-8C0A-5E1257519920}"
+	ProjectSection(SolutionItems) = preProject
+		statestore.yaml = statestore.yaml
+		..\TodoProject\components\workflow.yaml = ..\TodoProject\components\workflow.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

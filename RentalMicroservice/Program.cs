@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen();
 
 //EF
 builder.Services.AddDbContext<RentalDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSql")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDB")));
 
 //Dependency Injection
 

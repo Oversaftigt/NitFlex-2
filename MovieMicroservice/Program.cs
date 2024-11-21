@@ -19,6 +19,7 @@ builder.AddServiceDefaults();
 
 builder.Services.AddControllers().AddDapr();
 builder.Services.AddDaprClient();
+builder.Services.AddDaprWorkflowClient();
 builder.Services.AddDaprWorkflow(options =>
 {
     options.RegisterWorkflow<FetchMovieWorkflow>();
@@ -65,7 +66,7 @@ builder.Services.AddAuthorization(options =>
 });
 //EF
 builder.Services.AddDbContext<MovieDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSql")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDB")));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -112,8 +113,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
-app.MapSubscribeHandler();
 app.UseCloudEvents();
+app.MapSubscribeHandler();
+app.MapControllers();
 
 app.Run();

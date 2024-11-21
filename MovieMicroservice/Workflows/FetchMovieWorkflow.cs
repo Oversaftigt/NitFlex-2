@@ -25,7 +25,7 @@ namespace MovieMicroservice.Workflows
             }
 
             //2. Fetch movielink
-            var movieLink = await context.CallActivityAsync<string>(nameof(GetMovieLinkActivity),input);
+            var movieLink = await context.CallActivityAsync<string>(nameof(GetMovieLinkActivity),input.MovieId);
 
             return movieLink;
         }

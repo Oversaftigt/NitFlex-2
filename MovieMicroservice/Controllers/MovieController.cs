@@ -1,4 +1,5 @@
 ﻿using Dapr.Client;
+using Dapr.Workflow;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieMicroservice.Models;
@@ -17,12 +18,14 @@ namespace MovieMicroservice.Controllers
         private readonly IMovieService _movieService;
         private readonly ILogger<MovieController> _logger;
         private readonly DaprClient _daprClient;
+        private readonly DaprWorkflowClient _daprWorkflowClient;
 
-        public MovieController(IMovieService movieService, ILogger<MovieController> logger, DaprClient daprClient)
+        public MovieController(IMovieService movieService, ILogger<MovieController> logger, DaprClient daprClient, DaprWorkflowClient daprWorkflowClient)
         {
             _movieService = movieService;
             _logger = logger;
             _daprClient = daprClient;
+            _daprWorkflowClient = daprWorkflowClient;
         }
 
         [Authorize(Roles = "Admin")]
@@ -33,7 +36,7 @@ namespace MovieMicroservice.Controllers
             {
                 _movieService.CreateMovie(createMovieItem);
                 _logger.LogInformation("Creating movie: " + createMovieItem.MovieName);
-                return Ok();
+                return Ok($"{createMovieItem.MovieName} has been added to NitFlex.");
             }
             catch (Exception ex)
             {
@@ -60,15 +63,38 @@ namespace MovieMicroservice.Controllers
             {
                 var workflowInstanceId = Guid.NewGuid().ToString();
 
-                await _daprClient.StartWorkflowAsync(
+                await _daprWorkflowClient.ScheduleNewWorkflowAsync(
                     "FetchMovieWorkflow",
-                    "s",
                     workflowInstanceId,
                     request
                     );
                     
 
-                return Ok(new {WorkflowInstanceId = workflowInstanceId});
+                WorkflowState state;
+
+                do
+                {
+                    // Get the current state of the workflow
+                    state = await _daprWorkflowClient.GetWorkflowStateAsync(workflowInstanceId);
+
+                    if (state.RuntimeStatus == WorkflowRuntimeStatus.Completed)
+                    {
+                        // Deserialize the result to string!!!!!remember
+                        var result = state.ReadOutputAs<string>();
+                        return Ok(result);
+                    }
+
+                    if (state.RuntimeStatus == WorkflowRuntimeStatus.Failed)
+                    {
+                        return StatusCode(500, "Workflow failed: " + state.FailureDetails); //get exception error messages from activities
+                    }
+
+                    // Wait
+                    await Task.Delay(1000);
+
+                } while (state.RuntimeStatus == WorkflowRuntimeStatus.Running);
+
+                return Accepted(new { Status = state.RuntimeStatus });
             }
             catch (Exception ex)
             {
