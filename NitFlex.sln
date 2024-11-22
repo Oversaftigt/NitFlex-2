@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", 
 		..\TodoProject\components\workflow.yaml = ..\TodoProject\components\workflow.yaml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorNitFlex", "BlazorNitFlex\BlazorNitFlex.csproj", "{4A49C1EC-6D5E-4A99-990E-AF3A76F2E325}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{E7264B91-B147-415F-8718-CE33052CB3C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7264B91-B147-415F-8718-CE33052CB3C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7264B91-B147-415F-8718-CE33052CB3C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A49C1EC-6D5E-4A99-990E-AF3A76F2E325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A49C1EC-6D5E-4A99-990E-AF3A76F2E325}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A49C1EC-6D5E-4A99-990E-AF3A76F2E325}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A49C1EC-6D5E-4A99-990E-AF3A76F2E325}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
