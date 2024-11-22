@@ -28,7 +28,7 @@ namespace MovieMicroservice.Controllers
             _daprWorkflowClient = daprWorkflowClient;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPost]
         public async Task<ActionResult> CreateMovie(CreateMovieItem createMovieItem)
         {
