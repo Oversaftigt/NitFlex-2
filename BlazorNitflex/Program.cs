@@ -42,8 +42,9 @@ builder.Services.AddHttpClient("unauthenticatedIdentityclient", client =>
 builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 builder.Services.AddBlazoredSessionStorageAsSingleton();
 
-//Radzen notifikation popup
+//Radzen 
 builder.Services.AddScoped<NotificationService>();
+builder.Services.AddRadzenComponents();
 
 builder.Services.AddAuthorizationCore();
 

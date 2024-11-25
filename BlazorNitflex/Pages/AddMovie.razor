@@ -1,0 +1,9 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@page "/movies/create"
+
+@attribute [Authorize(Roles = "Admin")]
+<h3>AddMovie</h3>
+
+@code {
+
+}

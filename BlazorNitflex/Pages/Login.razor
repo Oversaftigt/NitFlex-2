@@ -1,0 +1,61 @@
+﻿@using BlazorNitflex.Models
+@using BlazorNitflex.Services.Interfaces
+@using Radzen
+@using Radzen.Blazor
+@inject IAuthenticationService _authenticationService
+@inject NotificationService _notificationService
+@inject NavigationManager _navigationManager
+@page "/login"
+@page "/"
+
+<div class="d-flex justify-content-center">
+    <br />
+    hej
+</div>
+@* <div class="col-12" style="background-color: lightblue; height: 200px; width: 300px; opacity: 0.85">
+
+     <div class="column"></div>
+    <div class="column">
+        <RadzenText class="d-flex justify-content-center"> Welcome to Nitflex</RadzenText>
+        <RadzenTemplateForm Data="@loginModel" TItem="LoginModel" Submit="@HandleLogin">
+            <RadzenFieldset Text="Sign in here">
+                <RadzenStack Orientation="Orientation.Vertical">
+                    <div class="">
+                        <RadzenLabel Component="Email" Text="Enter your email address" />
+                    </div>
+                    <div class="col m-0">
+                        <RadzenTextBox @bind-Value="loginModel.Email" Name="Email" class="w-100" />
+                        <div class="col">
+                            <RadzenRequiredValidator Component="Email" Text="Enter an email" Style="position:absolute" />
+                            <RadzenEmailValidator Component="Email" Text="Invalid email"></RadzenEmailValidator>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <RadzenLabel Component="Password" Text="Enter a password" />
+                    </div>
+                    <div class="col">
+                        <RadzenPassword @bind-Value="loginModel.Password" Name="Password" class="w-100" />
+                        <div class="col d-block mb-2">
+                            <RadzenRequiredValidator Component="Password" Text="Oops, you forgot your password!" Style="position:absolute" />
+
+                        </div>
+                    </div>
+                </RadzenStack>
+            </RadzenFieldset>
+        </RadzenTemplateForm>
+    </div>
+    <div class="column"></div> 
+</div> *@
+
+
+
+@code {
+    private LoginModel loginModel = new();
+
+
+    public async Task HandleLogin()
+    {
+
+    }
+}

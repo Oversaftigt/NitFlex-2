@@ -43,6 +43,12 @@ namespace BlazorNitflex.Services
             await _sessionStorageService.SetItemAsync(JwtKey, result.Jwt);
         }
 
+        public async Task LogoutAsync()
+        {
+            await _sessionStorageService.RemoveItemAsync(JwtKey);
+
+            _jwtCache = null;
+        }
         public async Task<string> GetUserIdAsync()
         {
             var httpclient = _httpClientFactory.CreateClient("identityclient");
@@ -70,9 +76,6 @@ namespace BlazorNitflex.Services
         }
 
 
-        public async Task LogoutAsync()
-        {
-
-        }
+        
     }
 }

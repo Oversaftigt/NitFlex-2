@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<HeadContent>
+    <RadzenTheme Theme="material" />
+</HeadContent>
 <head>
     <meta charset="utf-8" />
     <title>BlazorNitflex</title>
     <base href="/" />
     <link href="css/app.css" rel="stylesheet" />
-    
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/material-base.css">
+
     <!-- If you add any scoped CSS files, uncomment the following to load them
     <link href="BlazorNitflex.styles.css" rel="stylesheet" /> -->
 </head>
@@ -20,6 +24,9 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
+
 </body>
 
 </html>
