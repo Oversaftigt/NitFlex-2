@@ -36,6 +36,7 @@ namespace IdentityMicroservice.Controllers
             //Try to create user
             var user = new IdentityUser { Email = registerModel.Email, UserName = registerModel.Email };
             var result = await _userManager.CreateAsync(user, registerModel.Password);
+            await _userManager.AddToRoleAsync(user, "User");
 
             if (result.Succeeded)
             {

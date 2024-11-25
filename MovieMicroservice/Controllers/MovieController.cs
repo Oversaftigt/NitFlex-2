@@ -90,7 +90,7 @@ namespace MovieMicroservice.Controllers
                     }
 
                     // Wait
-                    await Task.Delay(1000);
+                    await Task.Delay(1234);
 
                 } while (state.RuntimeStatus == WorkflowRuntimeStatus.Running);
 
