@@ -1,53 +1,46 @@
-﻿@using BlazorNitflex.Models
+﻿@using BlazorNitflex.Layouts
+@using BlazorNitflex.Models
+@using BlazorNitflex.Services
 @using BlazorNitflex.Services.Interfaces
 @using Radzen
 @using Radzen.Blazor
 @inject IAuthenticationService _authenticationService
 @inject NotificationService _notificationService
 @inject NavigationManager _navigationManager
+@inject CustomAuthenticationStateProvider _authenticationStateProvider
+@layout LoginLayout
 @page "/login"
 @page "/"
 
-<div class="d-flex justify-content-center">
-    <br />
-    hej
-</div>
-@* <div class="col-12" style="background-color: lightblue; height: 200px; width: 300px; opacity: 0.85">
 
-     <div class="column"></div>
-    <div class="column">
-        <RadzenText class="d-flex justify-content-center"> Welcome to Nitflex</RadzenText>
+
+<div class="login-container">
+    <RadzenCard Style="max-width: 400px; width: 100%; margin: 0 auto; padding: 20px;">
+        <RadzenHeading Size="H3" Style="text-align: center;">Login</RadzenHeading>
         <RadzenTemplateForm Data="@loginModel" TItem="LoginModel" Submit="@HandleLogin">
-            <RadzenFieldset Text="Sign in here">
-                <RadzenStack Orientation="Orientation.Vertical">
-                    <div class="">
-                        <RadzenLabel Component="Email" Text="Enter your email address" />
-                    </div>
-                    <div class="col m-0">
-                        <RadzenTextBox @bind-Value="loginModel.Email" Name="Email" class="w-100" />
-                        <div class="col">
-                            <RadzenRequiredValidator Component="Email" Text="Enter an email" Style="position:absolute" />
-                            <RadzenEmailValidator Component="Email" Text="Invalid email"></RadzenEmailValidator>
-                        </div>
-                    </div>
+            <RadzenFieldset Text="Sign in">
+                <RadzenLabel Text="Email" />
+                <RadzenTextBox Name="Email" @bind-Value="loginModel.Email" Placeholder="Enter your email" Style="width: 100%;" />
+                <RadzenRequiredValidator Component="Email" Text="Email is required" />
+                <RadzenEmailValidator Component="Email" Text="Invalid email"></RadzenEmailValidator>
 
-                    <div class="col">
-                        <RadzenLabel Component="Password" Text="Enter a password" />
-                    </div>
-                    <div class="col">
-                        <RadzenPassword @bind-Value="loginModel.Password" Name="Password" class="w-100" />
-                        <div class="col d-block mb-2">
-                            <RadzenRequiredValidator Component="Password" Text="Oops, you forgot your password!" Style="position:absolute" />
+                <div>
+                </div>
+                <RadzenLabel Text="Password" Style="margin-top: 15px;" />
+                <RadzenPassword Name="Password" @bind-Value="loginModel.Password" Placeholder="Enter your password" Style="width: 100%;" />
+                <RadzenRequiredValidator Component="Password" Text="Password is required" />
 
-                        </div>
-                    </div>
-                </RadzenStack>
+                <RadzenButton Text="Login" ButtonType="ButtonType.Submit" Style="margin-top: 20px; width: 100%;" />
             </RadzenFieldset>
         </RadzenTemplateForm>
-    </div>
-    <div class="column"></div> 
-</div> *@
 
+        <div style="margin-top: 10px; text-align: center;">
+            <RadzenLink Text="Forgot Password?" Path="/forgot-password" />
+            <span style="margin: 0 10px;">|</span>
+            <RadzenLink Text="Register" Path="/register" href="/register" />
+        </div>
+    </RadzenCard>
+</div>
 
 
 @code {
@@ -56,6 +49,28 @@
 
     public async Task HandleLogin()
     {
+        try
+        {
 
+            var loginResult = await _authenticationService.LoginAsync(loginModel);
+
+            if (loginResult is true)
+            {
+                var jwt = await _authenticationService.GetJwtAsync();
+                _authenticationStateProvider.NotifyUserLogin(jwt);
+                _notificationService.Notify(NotificationSeverity.Success, "You have successfully logged in");
+                _navigationManager.NavigateTo("/movies");
+            }
+            else
+            {
+                _notificationService.Notify(NotificationSeverity.Warning, "Wrong email or password");
+            }
+        }
+        catch (Exception ex)
+        {
+
+            _notificationService.Notify(NotificationSeverity.Error, "Unexpected error while trying to login");
+            Console.WriteLine(ex.Message);
+        }
     }
 }

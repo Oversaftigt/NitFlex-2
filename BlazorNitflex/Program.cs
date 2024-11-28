@@ -3,6 +3,7 @@ using BlazorNitflex;
 using BlazorNitflex.Handlers;
 using BlazorNitflex.Services;
 using BlazorNitflex.Services.Interfaces;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Radzen;
@@ -37,9 +38,16 @@ builder.Services.AddHttpClient("identityclient", client =>
 builder.Services.AddHttpClient("unauthenticatedIdentityclient", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7238");
-});
+}).AddHttpMessageHandler<AuthenticationHandler>();
 
+//DI services
 builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IRentalService, RentalService>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+builder.Services.AddScoped<CustomAuthenticationStateProvider>();
+
+//Blazored session to store jwt
 builder.Services.AddBlazoredSessionStorageAsSingleton();
 
 //Radzen 

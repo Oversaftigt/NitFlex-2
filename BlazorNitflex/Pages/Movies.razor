@@ -1,5 +1,11 @@
-﻿@page "/movies"
-
+﻿
+@using BlazorNitflex.Layouts
+@using Microsoft.AspNetCore.Authorization
+@using Radzen
+@using Radzen.Blazor
+@layout MainLayout
+@page "/movies"
+@attribute [Authorize(Roles = "Admin")]
 <h3>Movies</h3>
 
 @code {

@@ -1,7 +1,51 @@
-﻿
+﻿@using BlazorNitflex.Layouts
+@using BlazorNitflex.Models
+@using BlazorNitflex.Services.Interfaces
+@using Radzen.Blazor
+@using Radzen
+@inject IAuthenticationService _authenticationService
+@inject NotificationService _notificationService
+@inject NavigationManager _navigationManager
+@layout LoginLayout
 @page "/register"
-<h3>Register</h3>
+
+
+<div class="register-container">
+    <RadzenCard Style="max-width: 500px; margin: 0 auto; padding: 20px;">
+        <RadzenHeading Size="H3" Style="text-align: center;">Register</RadzenHeading>
+        <RadzenTemplateForm Data="registerModel" TItem="RegisterModel" Submit="@OnSubmit">
+
+            <!-- Email -->
+            <RadzenLabel Text="Email" Style="margin-top: 15px;" />
+            <RadzenTextBox Name="Email" @bind-Value="registerModel.Email" Placeholder="Enter your email" Style="width: 100%;" />
+            <RadzenRequiredValidator Component="Email" Text="Email is required" />
+            @* <RadzenRegularExpressionValidator Component="Email" Pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" Text="Enter a valid email address" /> *@
+
+            <!-- Password -->
+            <RadzenLabel Text="Password" Style="margin-top: 15px;" />
+            <RadzenPassword Name="Password" @bind-Value="registerModel.Password" Placeholder="Enter your password" Style="width: 100%;" />
+            <RadzenRequiredValidator Component="Password" Text="Password is required" />
+
+            <!-- Confirm Password -->
+            <RadzenLabel Text="Confirm Password" Style="margin-top: 15px;" />
+            <RadzenPassword Name="ConfirmPassword" @bind-Value="registerModel.ConfirmPassword" Placeholder="Confirm your password" Style="width: 100%;" />
+            <RadzenRequiredValidator Component="ConfirmPassword" Text="Confirm password is required" />
+            <RadzenCompareValidator Component="ConfirmPassword" CompareTo="Password" Text="Passwords must match" />
+
+            <!-- Submit Button -->
+            <RadzenButton Text="Register" ButtonType="ButtonType.Submit" Style="margin-top: 20px; width: 100%;" />
+        </RadzenTemplateForm>
+
+        <div style="margin-top: 10px; text-align: center;">
+            <RadzenLink Text="Already have an account? Login here" Path="/login" />
+        </div>
+    </RadzenCard>
+</div>
 
 @code {
+    private RegisterModel registerModel = new();
 
+    public async Task OnSubmit(){
+
+    }
 }

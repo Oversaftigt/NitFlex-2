@@ -37,7 +37,24 @@ h1:focus {
         content: "An error has occurred."
     }
 
-/*body {
+
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    background-color: #f5f5f5;
+}
+
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    background-color: #f9f9f9;
+}
+    /*body {
     background-image: url('https://www.cnet.com/a/img/resize/5daaedf6d19f6ad894d49f41ff290e59b8992eab/hub/2024/03/01/5bfc9ca7-e663-48e4-9293-fba938393a18/apple-tv-plus-great-movies-special-collection.jpg?auto=webp&width=1920');
     background-size: cover;
     background-position: center;

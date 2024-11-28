@@ -19,7 +19,7 @@ namespace BlazorNitflex.Services
             this._httpClientFactory = httpClientFactory;
         }
 
-        public async ValueTask<string> GetJwtAsync()
+        public async Task<string> GetJwtAsync()
         {
             if (string.IsNullOrEmpty(_jwtCache))
             {
@@ -28,19 +28,28 @@ namespace BlazorNitflex.Services
             return _jwtCache;
         }
 
-        public async Task LoginAsync(LoginModel loginModel)
+        public async Task SetJwtAsync(string jwt)
+        {
+            await _sessionStorageService.SetItemAsync(JwtKey, jwt);
+
+        }
+
+
+        public async Task<bool> LoginAsync(LoginModel loginModel)
         {
             var response = await _httpClientFactory.CreateClient("unauthenticatedIdentityclient")
-                                 .PostAsync("api/account/login", JsonContent.Create(loginModel));
+                                 .PostAsync("api/Account/login", JsonContent.Create(loginModel));
 
-            if (response.IsSuccessStatusCode is false)
+            if (response.IsSuccessStatusCode is true)
             {
-                throw new UnauthorizedAccessException("Login failed");
+                var result = await response.Content.ReadFromJsonAsync<LoginResponseModel>();
+
+                await SetJwtAsync(result.Token);
+
+                return true;
             }
+            return false;
 
-            var result = await response.Content.ReadFromJsonAsync<LoginResponseModel>();
-
-            await _sessionStorageService.SetItemAsync(JwtKey, result.Jwt);
         }
 
         public async Task LogoutAsync()
@@ -76,6 +85,6 @@ namespace BlazorNitflex.Services
         }
 
 
-        
+
     }
 }

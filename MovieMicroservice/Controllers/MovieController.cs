@@ -43,9 +43,24 @@ namespace MovieMicroservice.Controllers
                 return StatusCode(500, new { message = "Error creating movie", error = ex.Message });
             }
         }
-        
-        [HttpGet("movieId")]
-        public async Task<IActionResult> GetMovieDetails(Guid movieId)
+
+        [HttpGet("allmovies")]
+        public async Task<IActionResult> GetAllmovies()
+        {
+            try
+            {
+                var allMovies = _movieService.GetAllMovies();
+                _logger.LogInformation("Fetching all movies from the server");
+                return Ok(allMovies);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error fetching all movies", error = ex.Message });
+            }
+        }
+
+        [HttpGet("{movieId}")]
+        public async Task<IActionResult> GetMovieById(Guid movieId)
         {
             var movie = _movieService.GetMovieById(movieId);
             if (movie is not null) 
