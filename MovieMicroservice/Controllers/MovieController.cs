@@ -29,7 +29,7 @@ namespace MovieMicroservice.Controllers
         }
 
         [Authorize(Policy = "AdminPolicy")]
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<ActionResult> CreateMovie(CreateMovieItem createMovieItem)
         {
             try
@@ -43,7 +43,7 @@ namespace MovieMicroservice.Controllers
                 return StatusCode(500, new { message = "Error creating movie", error = ex.Message });
             }
         }
-
+        [Authorize(Roles = "Admin,User")]
         [HttpGet("allmovies")]
         public async Task<IActionResult> GetAllmovies()
         {
@@ -63,8 +63,8 @@ namespace MovieMicroservice.Controllers
         public async Task<IActionResult> GetMovieById(Guid movieId)
         {
             var movie = _movieService.GetMovieById(movieId);
-            if (movie is not null) 
-            { 
+            if (movie is not null)
+            {
                 return Ok(movie);
             }
             return BadRequest("Error getting movie details");
@@ -83,7 +83,7 @@ namespace MovieMicroservice.Controllers
                     workflowInstanceId,
                     request
                     );
-                    
+
 
                 WorkflowState state;
 

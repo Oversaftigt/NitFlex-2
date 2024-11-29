@@ -1,9 +1,76 @@
-﻿@using Microsoft.AspNetCore.Authorization
+﻿@using BlazorNitflex.Models
+@using BlazorNitflex.Services
+@using BlazorNitflex.Services.Interfaces
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthenticationService _authenticationService
+@inject NotificationService _notificationService
+@inject IMovieService _movieService
+@inject NavigationManager _navigationManager
+@inject CustomAuthenticationStateProvider _authenticationStateProvider
 @page "/movies/create"
-
 @attribute [Authorize(Roles = "Admin")]
-<h3>AddMovie</h3>
 
+<div style="display:flex; justify-content:center; align-items: center;">
+    <div>
+
+        <RadzenTemplateForm Data="@newMovie" TItem="CreateMovieItem" Submit="@HandleAddMovie">
+            <RadzenFieldset>
+                <div class="col m-0">
+                    <RadzenLabel Text="Movie Name" />
+                    <RadzenTextBox Name="MovieName" @bind-Value="@newMovie.MovieName" Placeholder="Enter movie name" />
+                    <RadzenRequiredValidator Component="MovieName" Text="No name, no movie for you" Style="position:absolute" />
+                </div>
+
+                <div class="col m-0">
+                    <RadzenLabel Text="Movie Description" />
+                    <RadzenTextBox Name="MovieDescription" @bind-Value="@newMovie.MovieDescription" Placeholder="Enter movie description" />
+                    <RadzenRequiredValidator Component="MovieDescription" Text="Add description" Style="position:absolute" />
+                </div>
+
+                <div class="col m-0">
+                    <RadzenLabel Text="Movie Genre" />
+                    <RadzenTextBox Name="MovieGenre" @bind-Value="@newMovie.MovieGenre" Placeholder="Enter movie genre" />
+                    <RadzenRequiredValidator Component="MovieGenre" Text="Add genre" Style="position:absolute" />
+                </div>
+
+                <div class="col m-0">
+                    <RadzenLabel Text="Movie Duration (minutes)" />
+                    <RadzenNumeric Name="MovieDuration" @bind-Value="@newMovie.MovieDurationInMinutes" Placeholder="Enter movie duration" />
+                    <RadzenRequiredValidator Component="MovieDuration" Text="Add movie duration" Style="position:absolute" />
+                    <RadzenRegexValidator Component="MovieDuration" Text="How can a movie be 0 minutes or less???" Pattern="^[1-9]\d*$" Style="position:absolute" />
+                </div>
+
+                <div class="col m-0">
+                    <RadzenLabel Text="Rental Price (whichever currency you like)" />
+                    <RadzenNumeric Name="RentalPrice" @bind-Value="@newMovie.MovieRentalPrice" Placeholder="Enter rental price" />
+                    <RadzenRequiredValidator Component="RentalPrice" Text="Add rental price" Style="position:absolute" />
+                    <RadzenRegexValidator Component="RentalPrice" Text="You wanna declare bankruptcy soon???" Pattern="^[1-9]\d*$" Style="position:absolute" />
+
+                </div>
+
+                <div class="col m-0">
+                    <RadzenButton class="w-100" ButtonType="ButtonType.Submit" Text="Add Movie" />
+                </div>
+            </RadzenFieldset>
+        </RadzenTemplateForm>
+
+    </div>
+</div>
 @code {
+    private CreateMovieItem newMovie = new();
+
+
+    public async Task HandleAddMovie()
+    {
+
+        if (await _movieService.CreateMovie(newMovie))
+        {
+            _notificationService.Notify(NotificationSeverity.Success, newMovie.MovieName + " has been added to NitFlex");
+        }
+        else
+        {
+            _notificationService.Notify(NotificationSeverity.Error, "Error adding new movie");
+        }
+    }
 
 }

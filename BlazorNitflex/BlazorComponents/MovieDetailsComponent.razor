@@ -1,0 +1,26 @@
+﻿@using BlazorNitflex.Models
+
+<RadzenFieldset Style="font-size:xx-large">
+
+    <h2 style="font-size: xx-large; color: #333">@Movie.MovieName</h2>
+
+    <div>
+        <p style="font-size:medium">@Movie.MovieDescription</p>
+
+
+        <p style="font-size:small; color:grey">Genre: @Movie.MovieGenre</p>
+        <p style="font-size:small; color:grey">Duration: @Movie.MovieDurationInMinutes</p>
+        <p style="font-size:small; color:grey">Rentalprice: @Movie.MovieRentalPrice</p>
+    </div>
+    <div>
+        <RadzenButton Text="Rent" Style="background-color: rebeccapurple"/>
+        <RadzenButton Text="Watch" Style="background-color: mediumpurple"/>
+    </div>
+</RadzenFieldset>
+
+
+@code {
+    [Parameter] public MovieItem Movie { get; set; }
+
+
+}

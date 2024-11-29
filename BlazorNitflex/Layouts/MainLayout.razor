@@ -1,7 +1,67 @@
-﻿@inherits LayoutComponentBase
+﻿@using BlazorNitflex.Services
+@using BlazorNitflex.Services.Interfaces
+@using Microsoft.AspNetCore.Components.Authorization
+@inherits LayoutComponentBase
+@inject CustomAuthenticationStateProvider _authenticationStateProvider
+@inject IAuthenticationService _authenticationService
+@inject NavigationManager _navigationManager
 
-<main> 
+<nav style="background-color:mediumpurple; color: rebeccapurple; display:flex; justify-content: space-between; align-items: center;">
+    @* Logo *@
+    <div style="display: flex; align-items: center">
+        <RadzenImage Path="/images/nitflex-noBG.png" Style="width: 100px; height: auto; margin-bottom: 20px; border-radius: 15px">
+        </RadzenImage>
+    </div>
+
+    <div style="display: flex; gap:1rem;">
+        <RadzenLink Text="My movies" Path="/" Style="color:white; font-size: larger" />
+        <RadzenLink Text="Movies" Path="/movies" Style="color:white; font-size: larger" />
+        @if (isAdmin)
+        {
+            <RadzenLink Text="Add Movie" Path="/movies/create" Style="color:white; font-size: larger" />
+        }
+    </div>
+
+    <div>
+        <RadzenButton Text="Logout" Click="@Logout" />
+    </div>
+
+</nav>
+<main>
     @Body
 </main>
 
-    <RadzenComponents />
+<RadzenComponents />
+
+
+@code {
+    private bool isUserMenuVisible = true;
+    private bool isAdmin;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckIfUserIsAdmin();
+    }
+
+    private async Task CheckIfUserIsAdmin()
+    {
+        // Get the current user's authentication state
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        // Check if the user is authenticated and has the "Admin" role
+        isAdmin = user.Identity?.IsAuthenticated == true && user.IsInRole("Admin");
+    }
+
+    private void ToggleUserMenu()
+    {
+        isUserMenuVisible = !isUserMenuVisible;
+    }
+
+    private async void Logout()
+    {
+        await _authenticationService.LogoutAsync();
+        _authenticationStateProvider.NotifyUserLogout();
+        _navigationManager.NavigateTo("/login");
+    }
+}

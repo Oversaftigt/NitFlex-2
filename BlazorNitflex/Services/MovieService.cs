@@ -1,4 +1,6 @@
-﻿using BlazorNitflex.Services.Interfaces;
+﻿using BlazorNitflex.Models;
+using BlazorNitflex.Services.Interfaces;
+using System.Net.Http.Json;
 
 namespace BlazorNitflex.Services
 {
@@ -11,7 +13,43 @@ namespace BlazorNitflex.Services
             _httpClientFactory = httpClientFactory;
         }
 
+        public async Task<List<MovieItem>> GetAllMovies()
+        {
+            try
+            {
+                var httpclient = _httpClientFactory.CreateClient("movieclient");
 
+                var movies = await httpclient.GetFromJsonAsync<List<MovieItem>>("api/movie/allmovies");
 
+                return movies;
+            }
+            catch (Exception ex)
+            {
+
+                return new List<MovieItem>();
+            }
+
+        }
+
+        public async Task<bool> CreateMovie(CreateMovieItem createMovieItem)
+        {
+            try
+            {
+                var httpclient = _httpClientFactory.CreateClient("movieclient");
+
+                var response = await httpclient.PostAsync("api/movie/create", JsonContent.Create(createMovieItem));
+
+                if (response.IsSuccessStatusCode is true)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -97,7 +97,15 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieService, MovieService>();
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("https://localhost:7261") // Blazor WebAssembly-URL
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
@@ -112,7 +120,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseCors();
 app.UseCloudEvents();
 app.MapSubscribeHandler();
 app.MapControllers();

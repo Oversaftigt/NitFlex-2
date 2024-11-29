@@ -57,9 +57,11 @@ namespace BlazorNitflex.Services
         //Parse claims from jwt
         private IEnumerable<Claim> ParseClaimsFromJwt(string jwt) 
         {
+            var dw = jwt.Split('.');
+
             var jwtPayload = jwt.Split('.')[1];
 
-            var jwtJsonBytes = AddPadding(jwtPayload);
+            var jwtJsonBytes = Convert.FromBase64String(AddPadding(jwtPayload));
 
             var jwtKeyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jwtJsonBytes);
 

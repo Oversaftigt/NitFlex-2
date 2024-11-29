@@ -59,7 +59,9 @@
                 var jwt = await _authenticationService.GetJwtAsync();
                 _authenticationStateProvider.NotifyUserLogin(jwt);
                 _notificationService.Notify(NotificationSeverity.Success, "You have successfully logged in");
-                _navigationManager.NavigateTo("/movies");
+                await Task.Delay(500);
+
+                _navigationManager.NavigateTo("/movies", forceLoad:true);
             }
             else
             {

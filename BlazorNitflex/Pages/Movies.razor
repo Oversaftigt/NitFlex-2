@@ -1,13 +1,37 @@
 ﻿
+@using BlazorNitflex.BlazorComponents
 @using BlazorNitflex.Layouts
+@using BlazorNitflex.Models
+@using BlazorNitflex.Services
+@using BlazorNitflex.Services.Interfaces
 @using Microsoft.AspNetCore.Authorization
 @using Radzen
 @using Radzen.Blazor
+@inject IAuthenticationService _authenticationService
+@inject NotificationService _notificationService
+@inject IMovieService _movieService
+@inject NavigationManager _navigationManager
+@inject CustomAuthenticationStateProvider _authenticationStateProvider
 @layout MainLayout
 @page "/movies"
-@attribute [Authorize(Roles = "Admin")]
-<h3>Movies</h3>
+@attribute [Authorize(Roles = "Admin, User")]
+
+<div></div>
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+    @foreach (var movie in allMovies)
+    {
+        <MovieDetailsComponent Movie="@movie"></MovieDetailsComponent>
+    }
+</div>
 
 @code {
+
+    private List<MovieItem> allMovies = new List<MovieItem>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        allMovies = await _movieService.GetAllMovies();      
+
+    }
 
 }
