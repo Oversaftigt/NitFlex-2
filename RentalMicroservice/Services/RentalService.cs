@@ -22,9 +22,9 @@ namespace RentalMicroservice.Services
             return _rentalRepository.GetAllRentalByUser(userId);
         }
 
-        bool IRentalService.DoesUserHaveRentalForThisMovie(Guid movieId, Guid userId)
+        bool IRentalService.DoesUserHaveRentalForThisMovie(RentalValidationRequest rentalValidation)
         {
-            return _rentalRepository.DoesUserHaveValidRentalForThisMovie(movieId, userId);
+            return _rentalRepository.DoesUserHaveValidRentalForThisMovie(rentalValidation);
         }
     }
 }

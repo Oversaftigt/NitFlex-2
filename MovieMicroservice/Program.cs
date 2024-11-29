@@ -8,6 +8,7 @@ using MovieMicroservice.Activities.Internal;
 using MovieMicroservice.Data;
 using MovieMicroservice.Repositories;
 using MovieMicroservice.Services;
+using MovieMicroservice.ThirdParty;
 using MovieMicroservice.Workflows;
 using System.Text;
 
@@ -96,6 +97,7 @@ builder.Services.AddAuthentication(options =>
 //Dependency injection
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IYoutubeService, YoutubeService>();
 
 builder.Services.AddCors(options =>
 {

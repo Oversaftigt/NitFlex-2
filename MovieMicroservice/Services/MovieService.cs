@@ -1,15 +1,18 @@
 ﻿using MovieMicroservice.Models;
 using MovieMicroservice.Repositories;
+using MovieMicroservice.ThirdParty;
 
 namespace MovieMicroservice.Services
 {
     public class MovieService : IMovieService
     {
         private readonly IMovieRepository _movieRepository;
+        private readonly IYoutubeService _youtubeService;
 
-        public MovieService(IMovieRepository repository)
+        public MovieService(IMovieRepository repository, IYoutubeService youtubeService)
         {
             this._movieRepository = repository;
+            _youtubeService = youtubeService;
         }
 
         void IMovieService.CreateMovie(CreateMovieItem createMovieItem)
@@ -32,9 +35,12 @@ namespace MovieMicroservice.Services
             return _movieRepository.GetAllMovies();
         }
 
-        string IMovieService.GetMovieLinkById(Guid id)
+        async Task<string> IMovieService.GetMovieLinkById(Guid id)
         {
-            return "Placeholder movie link";
+            var movie = _movieRepository.GetMovieById(id);
+            var youtubeLink = await _youtubeService.GetFirstMovieLink(movie.MovieName);
+
+            return  youtubeLink;
         }
 
         MovieItem IMovieService.GetMovieById(Guid id)

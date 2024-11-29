@@ -6,6 +6,6 @@ namespace RentalMicroservice.Services
     {
         void CreateRental(CreateRentalItem createRentalItem);
         List<RentalItem> GetAllRentalByUser(Guid userId);
-        bool DoesUserHaveRentalForThisMovie(Guid movieId, Guid userId);
+        bool DoesUserHaveRentalForThisMovie(RentalValidationRequest validationRequest);
     }
 }

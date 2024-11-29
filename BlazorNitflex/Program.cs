@@ -52,6 +52,7 @@ builder.Services.AddBlazoredSessionStorageAsSingleton();
 
 //Radzen 
 builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<DialogService>();
 builder.Services.AddRadzenComponents();
 
 builder.Services.AddAuthorizationCore();

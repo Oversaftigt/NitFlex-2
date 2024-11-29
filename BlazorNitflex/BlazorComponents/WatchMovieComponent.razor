@@ -1,0 +1,17 @@
+﻿
+
+@if (string.IsNullOrEmpty(MovieLink) is false)
+{
+    <iframe width="100%" height="315" src="@MovieLink" frameborder="0" allowfullscreen />
+}
+else
+{
+    <p>Hmm, error getting movie. Bad luck for you, cuz you are not getting your money back!</p>
+}
+
+
+@code {
+    [Parameter] public string MovieLink { get; set; } = string.Empty;
+
+
+}

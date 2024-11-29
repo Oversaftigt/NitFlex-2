@@ -9,6 +9,6 @@ namespace MovieMicroservice.Services
         void DeleteMovie(DeleteMovieItem deleteMovieItem);
         MovieItem GetMovieById(Guid id);
         List<MovieItem> GetAllMovies();
-        string GetMovieLinkById(Guid movieId);
+        Task<string> GetMovieLinkById(Guid movieId);
     }
 }

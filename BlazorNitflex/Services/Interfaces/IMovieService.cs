@@ -8,5 +8,6 @@ namespace BlazorNitflex.Services.Interfaces
 
         Task<List<MovieItem>> GetAllMovies();
         Task<bool> CreateMovie(CreateMovieItem createMovieItem);
+        Task<string> GetMovieLink(RentalValidationRequest request);
     }
 }

@@ -13,14 +13,25 @@
         <p style="font-size:small; color:grey">Rentalprice: @Movie.MovieRentalPrice</p>
     </div>
     <div>
-        <RadzenButton Text="Rent" Style="background-color: rebeccapurple"/>
-        <RadzenButton Text="Watch" Style="background-color: mediumpurple"/>
+        <RadzenButton Text="Rent for one week" Style="background-color: rebeccapurple" Click="@OnRentMovieButton"/>
+        <RadzenButton Text="Watch" Style="background-color: mediumpurple" Click="@OnWatchMovieButton"/>
     </div>
 </RadzenFieldset>
 
 
 @code {
     [Parameter] public MovieItem Movie { get; set; }
+    [Parameter] public EventCallback<Guid> OnRentMovie { get; set; }
+    [Parameter] public EventCallback<Guid> OnWatchMovie { get; set; }
 
+    //Sends movie ID back to parent to rent movie
+    private async Task OnRentMovieButton()
+    {
+        await OnRentMovie.InvokeAsync(Movie.Id);
+    }
 
+    private async Task OnWatchMovieButton()
+    {
+        await OnWatchMovie.InvokeAsync(Movie.Id);
+    }
 }

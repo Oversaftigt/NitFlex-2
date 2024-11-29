@@ -1,5 +1,4 @@
-﻿
-@using BlazorNitflex.BlazorComponents
+﻿@using BlazorNitflex.BlazorComponents
 @using BlazorNitflex.Layouts
 @using BlazorNitflex.Models
 @using BlazorNitflex.Services
@@ -10,7 +9,9 @@
 @inject IAuthenticationService _authenticationService
 @inject NotificationService _notificationService
 @inject IMovieService _movieService
+@inject IRentalService _rentalService
 @inject NavigationManager _navigationManager
+@inject DialogService _dialogService
 @inject CustomAuthenticationStateProvider _authenticationStateProvider
 @layout MainLayout
 @page "/movies"
@@ -20,7 +21,7 @@
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
     @foreach (var movie in allMovies)
     {
-        <MovieDetailsComponent Movie="@movie"></MovieDetailsComponent>
+        <MovieDetailsComponent Movie="@movie" OnRentMovie="@HandleMovieRent" OnWatchMovie="@HandleMovieWatching"></MovieDetailsComponent>
     }
 </div>
 
@@ -30,8 +31,62 @@
 
     protected override async Task OnInitializedAsync()
     {
-        allMovies = await _movieService.GetAllMovies();      
+        allMovies = await _movieService.GetAllMovies();
 
+    }
+
+    private async void HandleMovieRent(Guid movieId)
+    {
+        var userId = await _authenticationService.GetUserIdAsync();
+
+        CreateRentalItem newRental = new CreateRentalItem()
+            {
+                MovieId = movieId,
+                UserId = Guid.Parse(userId),
+                RentalStartDate = DateTime.UtcNow.Date,
+                RentalEndDate = DateTime.UtcNow.Date.AddDays(7)
+            };
+
+        var rentalResponse = await _rentalService.CreateRental(newRental);
+
+        if (rentalResponse is true)
+        {
+            _notificationService.Notify(NotificationSeverity.Success, "You have rented the movie!");
+        }
+        else
+        {
+            _notificationService.Notify(NotificationSeverity.Warning, "Error renting movie, do you already have an ongoing rent on this movie?");
+        }
+    }
+
+    private async void HandleMovieWatching(Guid movieId)
+    {
+        var userId = await _authenticationService.GetUserIdAsync();
+
+        RentalValidationRequest validationRequest = new()
+            {
+                MovieId = movieId,
+                UserId = Guid.Parse(userId)
+            };
+
+        bool doesUserHaveValidRentalForThisMovie = await _rentalService.DoesUserHaveRentalForThisMovie(validationRequest);
+
+        //only used to get movie name
+        var movieToWatch = allMovies.First(m => m.Id == movieId);
+
+        if (doesUserHaveValidRentalForThisMovie is true)
+        {
+            var movieLink = await _movieService.GetMovieLink(validationRequest);
+            await _dialogService.OpenAsync<WatchMovieComponent>(
+                movieToWatch.MovieName,
+                new Dictionary<string, object> {{"MovieLink", movieLink}},
+                new DialogOptions {Width = "80%", Height = "80%"}
+            );
+        }
+        else
+        {
+            _notificationService.Notify(NotificationSeverity.Warning, "FBI OPEN UP");
+        }
     }
 
 }

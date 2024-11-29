@@ -45,11 +45,22 @@ namespace BlazorNitflex.Services
                 }
                 return false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 throw;
             }
+        }
+
+        public async Task<string> GetMovieLink(RentalValidationRequest request)
+        {
+            var httpclient = _httpClientFactory.CreateClient("movieclient");
+
+            var response = await httpclient.PostAsync("api/movie/fetch-movie", JsonContent.Create(request));
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            return result;
         }
     }
 }
