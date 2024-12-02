@@ -34,6 +34,17 @@ namespace BlazorNitflex.Services
 
         }
 
+        public async Task<bool> Register(RegisterModel regsiterModel)
+        {
+            var response = await _httpClientFactory.CreateClient("unauthenticatedIdentityclient")
+                                 .PostAsync("api/account/register", JsonContent.Create(regsiterModel));
+
+            if (response.IsSuccessStatusCode is true)
+            {
+                return true;
+            }
+            return false;
+        }
 
         public async Task<bool> LoginAsync(LoginModel loginModel)
         {
@@ -49,7 +60,6 @@ namespace BlazorNitflex.Services
                 return true;
             }
             return false;
-
         }
 
         public async Task LogoutAsync()
@@ -84,7 +94,6 @@ namespace BlazorNitflex.Services
             return email;
         }
 
-
-
+       
     }
 }

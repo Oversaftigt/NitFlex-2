@@ -8,6 +8,7 @@ namespace BlazorNitflex.Services.Interfaces
         Task<string> GetJwtAsync();
         Task<string> GetUserIdAsync();
         Task SetJwtAsync(string jwt);
+        Task<bool> Register(RegisterModel regsiterModel);
         Task<bool> LoginAsync(LoginModel loginModel);
         Task LogoutAsync();
     }

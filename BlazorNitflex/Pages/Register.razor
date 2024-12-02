@@ -10,29 +10,38 @@
 @page "/register"
 
 
-<div class="register-container">
+<div >
     <RadzenCard Style="max-width: 500px; margin: 0 auto; padding: 20px;">
         <RadzenHeading Size="H3" Style="text-align: center;">Register</RadzenHeading>
         <RadzenTemplateForm Data="registerModel" TItem="RegisterModel" Submit="@OnSubmit">
 
-            <!-- Email -->
+            @* Email *@
             <RadzenLabel Text="Email" Style="margin-top: 15px;" />
             <RadzenTextBox Name="Email" @bind-Value="registerModel.Email" Placeholder="Enter your email" Style="width: 100%;" />
             <RadzenRequiredValidator Component="Email" Text="Email is required" />
             @* <RadzenRegularExpressionValidator Component="Email" Pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" Text="Enter a valid email address" /> *@
 
-            <!-- Password -->
+            <div></div>
+
+            @* Password  *@
             <RadzenLabel Text="Password" Style="margin-top: 15px;" />
             <RadzenPassword Name="Password" @bind-Value="registerModel.Password" Placeholder="Enter your password" Style="width: 100%;" />
+            <RadzenRegexValidator Component="Password" Text="Needs lower case letter." Pattern="^(?=.*[a-z]).{1,}$" />
+            <RadzenRegexValidator Component="Password" Text="Needs upper case letter." Pattern="^(?=.*[A-Z]).{1,}$" />
+            <RadzenRegexValidator Component="Password" Text="Needs non-alphanumeric letter." Pattern="^(?=.*[!\#$%^&*()]).{1,}$" />
+            <RadzenRegexValidator Component="Password" Text="Needs number." Pattern="^(?=.*\d).{1,}$" />
+            <RadzenRegexValidator Component="Password" Text="10+ characters." Pattern="^.{10,}$" Style="display:block" />
             <RadzenRequiredValidator Component="Password" Text="Password is required" />
 
-            <!-- Confirm Password -->
+            <div></div>
+
+            @* Confirm Password *@
             <RadzenLabel Text="Confirm Password" Style="margin-top: 15px;" />
             <RadzenPassword Name="ConfirmPassword" @bind-Value="registerModel.ConfirmPassword" Placeholder="Confirm your password" Style="width: 100%;" />
             <RadzenRequiredValidator Component="ConfirmPassword" Text="Confirm password is required" />
-            <RadzenCompareValidator Component="ConfirmPassword" CompareTo="Password" Text="Passwords must match" />
+            <RadzenCompareValidator Value="@registerModel.Password" Component="ConfirmPassword" CompareTo="ConfirmPassword" Text="Passwords must match" />
 
-            <!-- Submit Button -->
+            @* Submit Button *@
             <RadzenButton Text="Register" ButtonType="ButtonType.Submit" Style="margin-top: 20px; width: 100%;" />
         </RadzenTemplateForm>
 
@@ -45,7 +54,20 @@
 @code {
     private RegisterModel registerModel = new();
 
-    public async Task OnSubmit(){
 
+    public async Task OnSubmit()
+    {
+        var registerResult = await _authenticationService.Register(registerModel);
+
+        if (registerResult is true)
+        {
+            _notificationService.Notify(NotificationSeverity.Success, registerModel.Email + " has been registered in Nitflex. Login to enjoy all the movies in the world!");
+            _navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            _notificationService.Notify(NotificationSeverity.Warning, "Error occured trying to register. ");
+        }
     }
+
 }
