@@ -31,10 +31,10 @@ namespace RentalMicroservice.Repositories
             return rentals.ToList();
         }
 
-        bool IRentalRepository.DoesUserHaveValidRentalForThisMovie(Guid movieId, Guid userId)
+        bool IRentalRepository.DoesUserHaveValidRentalForThisMovie(RentalValidationRequest rentalValidation)
         {
-            var hasRental = _context.Rentals.Any(r => r.UserId == userId &&
-                                                      r.MovieId == movieId &&
+            var hasRental = _context.Rentals.Any(r => r.UserId == rentalValidation.UserId &&
+                                                      r.MovieId == rentalValidation.MovieId &&
                                                       r.RentalEndDate >= DateTime.UtcNow.Date);
             return hasRental;
         }

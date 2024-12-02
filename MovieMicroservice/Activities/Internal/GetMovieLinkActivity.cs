@@ -14,7 +14,7 @@ namespace MovieMicroservice.Activities.Internal
 
         public override async Task<string> RunAsync(WorkflowActivityContext context, Guid input)
         {
-            var movieLink = _movieService.GetMovieLinkById(input);
+            var movieLink = await _movieService.GetMovieLinkById(input);
             return movieLink;
         }
     }

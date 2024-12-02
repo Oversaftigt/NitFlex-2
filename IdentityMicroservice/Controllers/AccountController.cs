@@ -36,6 +36,7 @@ namespace IdentityMicroservice.Controllers
             //Try to create user
             var user = new IdentityUser { Email = registerModel.Email, UserName = registerModel.Email };
             var result = await _userManager.CreateAsync(user, registerModel.Password);
+            await _userManager.AddToRoleAsync(user, "User");
 
             if (result.Succeeded)
             {
@@ -55,8 +56,8 @@ namespace IdentityMicroservice.Controllers
 
                 var authClaims = new List<Claim>
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Email!),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Email, user.Email),
                 };
 
                 authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));

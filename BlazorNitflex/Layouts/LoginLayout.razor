@@ -1,0 +1,17 @@
+﻿@inherits LayoutComponentBase
+
+
+<main style="background-image: url('https://media.gettyimages.com/id/1363352866/photo/friends-enjoying-a-comedy-movie-at-the-cinema.jpg?s=2048x2048&w=gi&k=20&c=qPv76pW5VDjW4MaK7pzkPhya6UIaBpdW2-RkVo72gzs=');
+            background-size: cover; background-position: center;
+            background-repeat: no-repeat; height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;">
+
+    <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+        <RadzenImage Path="/images/nitflex.png" Style="width: 300px; height: auto; margin-bottom: 20px; border-radius: 15px"></RadzenImage>
+        @Body
+    </div>
+</main>
+
+<RadzenComponents />

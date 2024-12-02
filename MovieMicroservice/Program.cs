@@ -8,6 +8,7 @@ using MovieMicroservice.Activities.Internal;
 using MovieMicroservice.Data;
 using MovieMicroservice.Repositories;
 using MovieMicroservice.Services;
+using MovieMicroservice.ThirdParty;
 using MovieMicroservice.Workflows;
 using System.Text;
 
@@ -96,8 +97,17 @@ builder.Services.AddAuthentication(options =>
 //Dependency injection
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IYoutubeService, YoutubeService>();
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("https://localhost:7261") // Blazor WebAssembly-URL
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
@@ -112,7 +122,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseCors();
 app.UseCloudEvents();
 app.MapSubscribeHandler();
 app.MapControllers();

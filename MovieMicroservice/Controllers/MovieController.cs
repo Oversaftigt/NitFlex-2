@@ -29,7 +29,7 @@ namespace MovieMicroservice.Controllers
         }
 
         [Authorize(Policy = "AdminPolicy")]
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<ActionResult> CreateMovie(CreateMovieItem createMovieItem)
         {
             try
@@ -43,13 +43,28 @@ namespace MovieMicroservice.Controllers
                 return StatusCode(500, new { message = "Error creating movie", error = ex.Message });
             }
         }
-        
-        [HttpGet("movieId")]
-        public async Task<IActionResult> GetMovieDetails(Guid movieId)
+        [Authorize(Roles = "Admin,User")]
+        [HttpGet("allmovies")]
+        public async Task<IActionResult> GetAllmovies()
+        {
+            try
+            {
+                var allMovies = _movieService.GetAllMovies();
+                _logger.LogInformation("Fetching all movies from the server");
+                return Ok(allMovies);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error fetching all movies", error = ex.Message });
+            }
+        }
+
+        [HttpGet("{movieId}")]
+        public async Task<IActionResult> GetMovieById(Guid movieId)
         {
             var movie = _movieService.GetMovieById(movieId);
-            if (movie is not null) 
-            { 
+            if (movie is not null)
+            {
                 return Ok(movie);
             }
             return BadRequest("Error getting movie details");
@@ -68,7 +83,7 @@ namespace MovieMicroservice.Controllers
                     workflowInstanceId,
                     request
                     );
-                    
+
 
                 WorkflowState state;
 
@@ -90,7 +105,7 @@ namespace MovieMicroservice.Controllers
                     }
 
                     // Wait
-                    await Task.Delay(1000);
+                    await Task.Delay(1234);
 
                 } while (state.RuntimeStatus == WorkflowRuntimeStatus.Running);
 

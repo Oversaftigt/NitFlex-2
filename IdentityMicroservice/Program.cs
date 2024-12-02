@@ -91,6 +91,16 @@ builder.Services.AddAuthorization(options =>
     
 });
 
+//Giv adgang til at blazor kan request
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("https://localhost:7261") // Blazor WebAssembly-URL
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -110,6 +120,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors();
 app.MapIdentityApi<User>();
 
 app.UseHttpsRedirection();

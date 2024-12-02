@@ -26,6 +26,16 @@ namespace RentalMicroservice.Controllers
         {
             try
             {
+                //Check first if theres already a rental for this movie and this user
+                RentalValidationRequest validationRequest = new() { MovieId = createRentalItem.MovieId, UserId = createRentalItem.UserId };
+                bool alreadyRentedForUser = _rentalService.DoesUserHaveRentalForThisMovie(validationRequest);
+
+                if (alreadyRentedForUser)
+                {
+                    return BadRequest("User already has an ongoing rent on this movie");
+                }
+
+                //otherwise create the rental
                 _rentalService.CreateRental(createRentalItem);
                 _logger.LogInformation("Creating Rental for UserID:" + createRentalItem.UserId + " with movie: " + createRentalItem.MovieId);
                 return Ok($"{createRentalItem.UserId} is now renting {createRentalItem.MovieId}");
@@ -39,7 +49,7 @@ namespace RentalMicroservice.Controllers
         [HttpPost("validate")]
         public async Task<IActionResult> CheckValidRental([FromBody] RentalValidationRequest request)
         {
-            var isValidRental = _rentalService.DoesUserHaveRentalForThisMovie(request.MovieId, request.UserId);
+            var isValidRental = _rentalService.DoesUserHaveRentalForThisMovie(request);
             return Ok(isValidRental);
         }
 
