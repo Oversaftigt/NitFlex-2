@@ -17,15 +17,17 @@
 
             @* Email *@
             <RadzenLabel Text="Email" Style="margin-top: 15px;" />
-            <RadzenTextBox Name="Email" @bind-Value="registerModel.Email" Placeholder="Enter your email" Style="width: 100%;" />
+            <RadzenTextBox Name="Email" @bind-Value="registerModel.Email" 
+                                        Placeholder="Enter your email" Style="width: 100%;" />
             <RadzenRequiredValidator Component="Email" Text="Email is required" />
-            @* <RadzenRegularExpressionValidator Component="Email" Pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" Text="Enter a valid email address" /> *@
+            <RadzenEmailValidator Component="Email" Text="No fake emails, please!"/>
 
             <div></div>
 
             @* Password  *@
             <RadzenLabel Text="Password" Style="margin-top: 15px;" />
-            <RadzenPassword Name="Password" @bind-Value="registerModel.Password" Placeholder="Enter your password" Style="width: 100%;" />
+            <RadzenPassword Name="Password" @bind-Value="registerModel.Password" 
+                            Placeholder="Enter your password" Style="width: 100%;" />
             <RadzenRegexValidator Component="Password" Text="Needs lower case letter." Pattern="^(?=.*[a-z]).{1,}$" />
             <RadzenRegexValidator Component="Password" Text="Needs upper case letter." Pattern="^(?=.*[A-Z]).{1,}$" />
             <RadzenRegexValidator Component="Password" Text="Needs non-alphanumeric letter." Pattern="^(?=.*[!\#$%^&*()]).{1,}$" />
@@ -37,9 +39,11 @@
 
             @* Confirm Password *@
             <RadzenLabel Text="Confirm Password" Style="margin-top: 15px;" />
-            <RadzenPassword Name="ConfirmPassword" @bind-Value="registerModel.ConfirmPassword" Placeholder="Confirm your password" Style="width: 100%;" />
+            <RadzenPassword Name="ConfirmPassword" @bind-Value="registerModel.ConfirmPassword" 
+                            Placeholder="Confirm your password" Style="width: 100%;" />
             <RadzenRequiredValidator Component="ConfirmPassword" Text="Confirm password is required" />
-            <RadzenCompareValidator Value="@registerModel.Password" Component="ConfirmPassword" CompareTo="ConfirmPassword" Text="Passwords must match" />
+            <RadzenCompareValidator Value="@registerModel.Password" Component="ConfirmPassword" 
+                                    CompareTo="ConfirmPassword" Text="Passwords must match" />
 
             @* Submit Button *@
             <RadzenButton Text="Register" ButtonType="ButtonType.Submit" Style="margin-top: 20px; width: 100%;" />

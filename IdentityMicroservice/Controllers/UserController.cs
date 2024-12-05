@@ -9,7 +9,7 @@ namespace IdentityMicroservice.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-
+        //for testing
         [HttpGet]
         public IActionResult Get()
         {

@@ -73,7 +73,6 @@ namespace MovieMicroservice.Controllers
         [HttpPost("fetch-movie")]
         public async Task<IActionResult> FetchMovieLink([FromBody] RentalValidationRequest request)
         {
-
             try
             {
                 var workflowInstanceId = Guid.NewGuid().ToString();
@@ -84,7 +83,6 @@ namespace MovieMicroservice.Controllers
                     request
                     );
 
-
                 WorkflowState state;
 
                 do
@@ -92,6 +90,7 @@ namespace MovieMicroservice.Controllers
                     // Get the current state of the workflow
                     state = await _daprWorkflowClient.GetWorkflowStateAsync(workflowInstanceId);
 
+                    // If workflow is done, send OK with the result
                     if (state.RuntimeStatus == WorkflowRuntimeStatus.Completed)
                     {
                         // Deserialize the result to string!!!!!remember
@@ -101,10 +100,12 @@ namespace MovieMicroservice.Controllers
 
                     if (state.RuntimeStatus == WorkflowRuntimeStatus.Failed)
                     {
-                        return StatusCode(500, "Workflow failed: " + state.FailureDetails); //get exception error messages from activities
+                        return StatusCode(500, "Workflow failed: " + state.FailureDetails); 
+                        //get exception error messages from activities.
+                        //Probably not the best idea to send this back to the frontend
                     }
 
-                    // Wait
+                    // Wait so the loop doesnt loop too many times
                     await Task.Delay(1234);
 
                 } while (state.RuntimeStatus == WorkflowRuntimeStatus.Running);
@@ -113,43 +114,7 @@ namespace MovieMicroservice.Controllers
             }
             catch (Exception ex)
             {
-
-                return StatusCode(500, $"An error occured getting the movie: {ex.Message}");
-            }
-
-        }
-
-        //test
-        [HttpGet("test")]
-        [Authorize]
-        public async Task<IActionResult> test()
-        {
-            try
-            {
-                var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                var token = HttpContext.Request.Headers["Authorization"].ToString()?.Replace("Bearer ", "");
-
-                // Create an HTTP client for the IdentityMicroservice
-                var httpClient = DaprClient.CreateInvokeHttpClient("identitymicroservice");
-                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-                // Make the GET request
-                var response = await httpClient.GetAsync("api/account/userId");
-
-                //if (!response.IsSuccessStatusCode)
-                //{
-                //    return StatusCode((int)response.StatusCode, "Error calling IdentityMicroservice");
-                //}
-
-                // Read the response as a string
-                var userId = await response.Content.ReadAsStringAsync();
-
-                return Ok(userId);
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception("Error getting userId", ex);
+                return StatusCode(500, $"An error occured getting the movie with Id {request.MovieId}: {ex.Message}");
             }
         }
 
@@ -169,7 +134,7 @@ namespace MovieMicroservice.Controllers
             catch (Exception ex)
             {
 
-                throw new Exception("Error validating rental", ex);
+                return StatusCode(500,"Error validating rental");
             }
         }
     }

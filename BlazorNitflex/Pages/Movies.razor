@@ -21,7 +21,10 @@
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
     @foreach (var movie in allMovies)
     {
-        <MovieDetailsComponent Movie="@movie" OnRentMovie="@HandleMovieRent" OnWatchMovie="@HandleMovieWatching"></MovieDetailsComponent>
+        <MovieDetailsComponent Movie="@movie" 
+                               OnRentMovie="@HandleMovieRent" 
+                               OnWatchMovie="@HandleMovieWatching">
+        </MovieDetailsComponent>
     }
 </div>
 
@@ -32,7 +35,6 @@
     protected override async Task OnInitializedAsync()
     {
         allMovies = await _movieService.GetAllMovies();
-
     }
 
     private async void HandleMovieRent(Guid movieId)

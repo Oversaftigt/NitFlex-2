@@ -8,10 +8,7 @@ namespace MovieMicroservice.Workflows
 {
     public class FetchMovieWorkflow : Workflow<RentalValidationRequest,string>
     {
-        public FetchMovieWorkflow()
-        {
-
-        }
+        public FetchMovieWorkflow() { }
 
         public override async Task<string> RunAsync(WorkflowContext context, RentalValidationRequest input)//input = movieid
         {

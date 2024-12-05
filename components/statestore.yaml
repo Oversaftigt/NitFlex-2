@@ -1,13 +1,13 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: statestore  # Must match the name used in your workflow component or code
+  name: statestore 
   namespace: default
 spec:
   type: state.redis
   version: v1
   metadata:
   - name: redisHost
-    value: localhost:6379  # Replace with your Redis host
+    value: localhost:6379
   - name: redisPassword
     value: ""

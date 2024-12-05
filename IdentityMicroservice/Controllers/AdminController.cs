@@ -10,6 +10,7 @@ namespace IdentityMicroservice.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
+        //for testing
         [HttpGet]
         public IActionResult Get()
         {

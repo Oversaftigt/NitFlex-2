@@ -38,6 +38,7 @@
         await OnRentMovie.InvokeAsync(Movie.Id);
     }
 
+    //Sends movie ID back to parent to watch movie
     private async Task OnWatchMovieButton()
     {
         await OnWatchMovie.InvokeAsync(Movie.Id);
